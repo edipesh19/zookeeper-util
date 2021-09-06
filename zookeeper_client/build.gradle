@@ -1,0 +1,48 @@
+buildscript {
+    repositories {
+        jcenter() // this applies only to the Gradle 'Shadow' plugin
+    }
+}
+plugins {
+    id 'java'
+}
+
+group 'dipesh.zookeeper.client'
+version '1.0-SNAPSHOT'
+description = "Zookeeper client"
+
+ext {
+    javaVersion = '1.8'
+}
+sourceCompatibility = ext.javaVersion
+targetCompatibility = ext.javaVersion
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://repository.apache.org/content/repositories/snapshots/" }
+}
+
+dependencies {
+    implementation 'org.projectlombok:lombok:1.18.20'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter
+    implementation "org.springframework.boot:spring-boot-starter:2.4.3"
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
+    // https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper
+    implementation ('org.apache.zookeeper:zookeeper:3.6.3') {
+        exclude group: 'jline', module: 'jline'
+        exclude group: 'netty', module: 'io.netty'
+    }
+
+    implementation "log4j:log4j:1.2.17"
+    implementation "org.slf4j:slf4j-log4j12:1.7.7"
+}
+
+test {
+    useJUnitPlatform()
+}

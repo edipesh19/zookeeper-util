@@ -1,0 +1,58 @@
+buildscript {
+    repositories {
+        jcenter() // this applies only to the Gradle 'Shadow' plugin
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+    }
+}
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
+}
+
+group 'dipesh.zookeeper.cluster.management.example'
+version '1.0-SNAPSHOT'
+description = "Cluster management using zookeeper"
+
+ext {
+    javaVersion = '1.8'
+}
+sourceCompatibility = ext.javaVersion
+targetCompatibility = ext.javaVersion
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://repository.apache.org/content/repositories/snapshots/" }
+}
+
+dependencies {
+    implementation 'org.projectlombok:lombok:1.18.20'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter
+    implementation "org.springframework.boot:spring-boot-starter:2.4.3"
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
+    // https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper
+    implementation group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.6.3'
+    // https://mvnrepository.com/artifact/com.101tec/zkclient
+    implementation group: 'com.101tec', name: 'zkclient', version: '0.11'
+
+
+
+}
+
+shadowJar {
+    mergeServiceFiles()
+    archiveName "${project.name}-${project.version}.jar"
+}
+
+build.dependsOn shadowJar
+
+test {
+    useJUnitPlatform()
+}

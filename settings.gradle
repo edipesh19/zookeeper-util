@@ -1,2 +1,4 @@
 rootProject.name = 'Zookeeper'
+//include 'Cluster_State'
+include 'zookeeper_client'
 
